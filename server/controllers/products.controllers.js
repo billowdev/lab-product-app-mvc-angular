@@ -68,7 +68,21 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
-exports.createProduct = async (req, res, next) => {
+
+exports.getProductById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const resp = await Products.findAll({where:{id:id}})
+    if(resp.length!=0){
+      res.status(200).json({success:true, msg:"get product success", data:resp})
+    }else {
+      res.status(400).json({success:false, msg:" can't get product success"})
+    }
+  }catch(err){
+
+  }
+}
+exports.createProduct = async (req, res) => {
   try {
     const { name, detail } = req.body;
     const resp = await Products.findOne({ where: { name, detail } });
