@@ -1,60 +1,14 @@
 const { Products } = require("../models");
 
-exports.getAllProducts = async (req, res) => {
+exports.getAllProducts = async (req, res) =>  {
   try {
-    const page = parseInt(req.query.page);
-    const perPage = parseInt(req.query.per_page);
-    const sortColumn = req.query.sort_column;
-    const sortDirection = req.query.sort_direction;
-    const search = req.query.search;
-    const startIndex = (page - 1) * perPage;
-
-    const total = await Products.count();
-
-    let totalPages = total / perPage;
-    let products;
-    if (search && sortColumn) {
-      products = await Products.findAll({
-        offset: startIndex,
-        limit: perPage,
-        where: {
-          name: {
-            [Op.like]: `%${search}%`,
-          },
-        },
-        order: [[sortColumn, sortDirection]],
-      });
-    } else if (search) {
-      products = await Products.findAll({
-        where: {
-          name: {
-            [Op.like]: `%${search}%`,
-          },
-        },
-      });
-    } else if (sortColumn) {
-      products = await Products.findAll({
-        offset: startIndex,
-        limit: perPage,
-        order: [[sortColumn, sortDirection]],
-      });
-    } else {
-      products = await Products.findAll({
-        offset: startIndex,
-        limit: perPage,
-      });
-    }
-    res.status(200).json({
-      success: true,
-      msg: "get product success",
-      data: {
-        page: page,
-        per_page: perPage,
-        total_pages: totalPages,
-        total: total,
-        products,
-      },
-    });
+     const resp = await Products.findAll({raw:true})
+      if(resp){
+        res.status(200).json(resp)
+        console.log(resp)
+      }else{
+        res.status(400).json()
+      }
   } catch (err) {
     console.log({
       success: false,
@@ -74,7 +28,7 @@ exports.getProductById = async (req, res) => {
     const id = req.params.id;
     const resp = await Products.findAll({where:{id:id}})
     if(resp.length!=0){
-      res.status(200).json({success:true, msg:"get product success", data:resp})
+      res.status(200).json(resp)
     }else {
       res.status(400).json({success:false, msg:" can't get product success"})
     }
