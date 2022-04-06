@@ -1,1 +1,31 @@
-<p>all-products works!</p>
+<div class="container mt-3">
+	<div class="d-flex justify-content between flex-wrap flex-md-nowrap align-items center pt-2 pb-2 m-3 border-buttom">
+		<h3>Products</h3>
+	</div>
+
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Name</th>
+					<th scope="col">Detail</th>
+					<th scope="col">Price</th>
+					<th class="text-center" scope="col">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let product of Products; let idx = index">
+					<th scope="row">{{product.id}}</th>
+					<td>{{product.name}}</td>
+					<td>{{product.detail}}</td>
+					<td>{{product.price}}</td>
+					<td class="text-center">
+						<button class="btn btn-sm btn-primary" routerLink="/edit-product/{{product.id}}">แก้ไข</button>
+						<button class="btn btn-sm btn-danger" (click)="delete(product.id, idx)">ลบ</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

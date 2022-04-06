@@ -2,13 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-
-export class Products {
-  id!: String;
-  name!: String;
-  price!: Number;
-  detail!: String;
-}
+import { ProductModel } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +19,7 @@ export class CrudService {
 
   constructor(private httpClient: HttpClient) { }
   // Add
-  AddProduct(data: Products): Observable<any> {
+  AddProduct(data: ProductModel): Observable<any> {
     let API_URL = `${this.REST_API}/product/create`
     return this.httpClient.post(API_URL, data).pipe(
       catchError(this.handleError)
@@ -34,34 +28,34 @@ export class CrudService {
 
   // get all product
   GetProducts() {
-    return this.httpClient.get(`${this.REST_API}/product/get`)
+    return this.httpClient.get<ProductModel[]>(`${this.REST_API}/product/all`)
   }
-    // get all product
-    GetProduct(id: any) {
-      let API_URL = `${this.REST_API}/product/get/${id}`
-      return this.httpClient.get(API_URL, {headers: this.httpHeaders}).pipe(((res: any)=>{
-        return res || {}
-      }),
+  // get all product
+  GetProduct(id: any) {
+    let API_URL = `${this.REST_API}/product/get/${id}`
+    return this.httpClient.get<ProductModel[]>(API_URL, { headers: this.httpHeaders }).pipe(((res: any) => {
+      return res.data || {}
+    }),
       catchError(this.handleError)
-      )
-    }
+    )
+  }
 
 
-    updateProduct(id:any, data:any):Observable<any>{
-      let API_URL = `${this.REST_API}/product/update/${id}`
-      return this.httpClient.patch(API_URL, data, {headers:this.httpHeaders}).pipe(
-        catchError(this.handleError)
-      )
-    }
+  updateProduct(id: any, data: any): Observable<any> {
+    let API_URL = `${this.REST_API}/product/update/${id}`
+    return this.httpClient.patch(API_URL, data, { headers: this.httpHeaders }).pipe(
+      catchError(this.handleError)
+    )
+  }
 
-    deleteProduct(id: any):Observable<any>{
-      let API_URL = `${this.REST_API}/product/delete/${id}`
-      return this.httpClient.delete(API_URL,{headers:this.httpHeaders}).pipe(
-        catchError(this.handleError)
-      )
-    }
-    
-    // error
+  deleteProduct(id: any): Observable<any> {
+    let API_URL = `${this.REST_API}/product/delete/${id}`
+    return this.httpClient.delete(API_URL, { headers: this.httpHeaders }).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  // error
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

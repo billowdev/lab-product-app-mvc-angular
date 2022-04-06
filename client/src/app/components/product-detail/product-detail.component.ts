@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Route } from '@angular/router'
+import { CrudService } from 'src/app/services/crud.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-product-detail',
@@ -7,7 +10,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductDetailComponent implements OnInit {
 
-  constructor() { }
+  getId: any;
+  updateForm!: FormGroup;
+
+  constructor(
+    public formBuilder: FormBuilder,
+     private router: Router, 
+     private ngZone: NgZone,
+    private activatedRoute : ActivatedRoute,
+    private crudService: CrudService) 
+    {
+      this.getId = this.activatedRoute.snapshot.paramMap.get('id');
+
+      // this.crudService.GetProduct(this.getId).subscribe(res=>{
+      //   this.updateForm.setValue({
+      //     name: res['name'],
+      //     detail: res['detail'],
+      //     price: res['price']
+      //   })
+      // })
+
+      
+    }
 
   ngOnInit(): void {
   }
