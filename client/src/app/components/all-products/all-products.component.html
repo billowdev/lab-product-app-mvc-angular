@@ -1,4 +1,4 @@
-<div class="container mt-3">
+<div class="container mt-3 all__product">
 	<div class="d-flex justify-content between flex-wrap flex-md-nowrap align-items center pt-2 pb-2 m-3 border-buttom">
 		<h3>Products</h3>
 	</div>
@@ -21,7 +21,7 @@
 					<td>{{product.detail}}</td>
 					<td>{{product.price}}</td>
 					<td class="text-center">
-						<button class="btn btn-sm btn-primary" routerLink="/edit-product/{{product.id}}">แก้ไข</button>
+						<button class="btn btn-sm btn-primary mb-2" routerLink="/edit-product/{{product.id}}">แก้ไข</button>
 						<button class="btn btn-sm btn-danger" (click)="delete(product.id, idx)">ลบ</button>
 					</td>
 				</tr>
